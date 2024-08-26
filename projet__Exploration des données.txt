@@ -1,0 +1,39 @@
+!pip install pandas matplotlib seaborn
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = pd.read_csv('data-sell4all.csv')
+
+print(data.head())
+
+print(data.info())
+
+print(data.describe())
+
+data = data[data['Dépenses des clients'] >= 10]
+
+data = data.drop_duplicates()
+
+data.to_csv('data-sell4all-clean.csv', index=False)
+
+median_age = data['Age'].median()
+mean_age = data['Age'].mean()
+median_expenses = data['Dépenses des clients'].median()
+mean_expenses = data['Dépenses des clients'].mean()
+
+print(f"Médiane de l'âge : {median_age}")
+print(f"Moyenne de l'âge : {mean_age}")
+print(f"Médiane des dépenses : {median_expenses}")
+print(f"Moyenne des dépenses : {mean_expenses}")
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Pays', y='Dépenses des clients', data=data, estimator=sum)
+plt.title('Dépenses des clients par pays')
+plt.xlabel('Pays')
+plt.ylabel('Dépenses des clients')
+plt.xticks(rotation=45)
+plt.show()
+
+data_cleaned = data[['Pays', 'Age', 'Genre', 'Dépenses des clients']]
+data_cleaned.to_csv('data-sell4all-cleaned.csv', index=False)
